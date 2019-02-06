@@ -165,6 +165,22 @@ public class OneSignalPush extends CordovaPlugin {
         String appId = data.getString(0);
         String googleProjectNumber = data.getString(1);
 
+        // If appId is empty, try to set it from strings
+        if(appId.isEmpty()) {
+          int appResId = cordova.getActivity().getResources().getIdentifier("onesignal_app_id", "string", cordova.getActivity().getPackageName());
+          if (appResId != 0) {
+            appId = cordova.getActivity().getString(appResId);
+          }
+        }
+
+        // If googleProject number is empty, try to set it from strings
+        if(googleProjectNumber.isEmpty()) {
+          int googleResId = cordova.getActivity().getResources().getIdentifier("google_project_number", "string", cordova.getActivity().getPackageName());
+          if (googleResId != 0) {
+            googleProjectNumber = cordova.getActivity().getString(googleResId);
+          }
+        }
+
         OneSignal.sdkType = "cordova";
         OneSignal.Builder builder = OneSignal.getCurrentOrNewInitBuilder();
         builder.unsubscribeWhenNotificationsAreDisabled(true);
